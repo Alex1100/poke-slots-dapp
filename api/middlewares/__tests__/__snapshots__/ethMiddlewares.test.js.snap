@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Eth Middleware Functions tests the \`exchangeEthForPSTToken\` func 1`] = `true`;
