@@ -15,7 +15,7 @@ console.log("OWNER ADDR IS: ", ownerAddress);
 const checkWalletFunds = async (req, res) => {
   try {
     const {
-      ethAddr
+      fromAddr
     } = req.body;
 
     const currentBalance = await web3.eth.getBalance(fromAddr);
