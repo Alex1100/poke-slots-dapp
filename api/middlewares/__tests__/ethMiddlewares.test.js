@@ -53,9 +53,9 @@ const exchangeEthForPSTToken = async (req, res) => {
 describe('Eth Middleware Functions', () => {
   it('tests the `checkWalletFunds` func', async () => {
     const fundsResult = await checkWalletFunds({ body: { fromAddr: process.env.OWNER_ADDR } }, {});
-    assert(typeof fundsResult).toEqual('string');
-    assert(typeof parseInt(fundsResult)).toEqual('number');
-    assert(parseInt(fundsResult)).toBeGreaterThan(0);
+    expect(typeof fundsResult).toEqual('string');
+    expect(typeof parseInt(fundsResult)).toEqual('number');
+    expect(parseInt(fundsResult)).toBeGreaterThan(0);
   });
 
   // it('tests the `exchangeEthForPSTToken` func', async () => {
