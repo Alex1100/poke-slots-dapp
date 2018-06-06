@@ -24,7 +24,7 @@ const exchangeEthForPSTToken = async (req, res, next) => {
       const tx = await contractInstance.methods.transfer(req.body.toAddr, req.body.value)
                       .call({
                         from: req.body.fromAddr,
-                        to: toAddr,
+                        to: req.body.toAddr,
                         value: req.body.value
                       });
       console.log("Transaction is: ", tx);

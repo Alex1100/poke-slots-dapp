@@ -4,6 +4,7 @@
   "description": "Decentralized Pokemon Slot Machine Application on the Ethereum Blockchain. Only for educational Purposes. I do not own the rights to anything Pokemon Related.",
   "main": "index.js",
   "scripts": {
+    "start": "node main.js",
     "test": "jest"
   },
   "author": "Alex1100 <alex1100.software@gmail.com>",
