@@ -19,6 +19,8 @@ import {
 const gameStats = (state = {
   wagerPlaced: 0,
   sufficientFunds: false,
+  coins: 0,
+  multiplier: 0,
   fundsErrorMessage: '',
 }, action) => {
   switch(action.type) {
