@@ -11,6 +11,9 @@ app.use(bodyParser.json({ limit: '5mb' }));
 app.use('/', express.static(path.join(__dirname, "public")));
 app.use('/api', routes);
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/index.html'));
+});
 
 require('dotenv').load();
 const abi = require('./contracts/abi.js');
@@ -27,7 +30,7 @@ const server = require('http').Server(app);
 
 
 server.listen(5100, () => {
-  console.log("LIVE")
+  console.log("APP IS LIVE");
 });
 
 

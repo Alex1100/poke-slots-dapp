@@ -1,7 +1,11 @@
-const infuraEndpoint = process.env.INFURA_RINKEBY;
+const path = require('path');
+require('dotenv').load({path: path.join(__dirname, '../../.env')});
 const Web3 = require('web3');
-const web3 = new Web3(new Web3.providers.HttpProvider(infuraEndpoint));
+const HDWalletProvider = require('truffle-hdwallet-provider');
+const provider = new HDWalletProvider(process.env.ACCOUNT_KEY, process.env.INFURA_RINKEBY);
+const web3 = new Web3(provider);
 const contractInstance = require('../../main').contractInstance;
+
 
 const checkWalletFunds = async (req, res, next) => {
   try {
@@ -9,12 +13,13 @@ const checkWalletFunds = async (req, res, next) => {
       ethAddr
     } = req.body;
 
-    const currentBalance = await web3.eth.getBalance(fromAddr);
+    const currentBalance = await web3.eth.getBalance(ethAddr);
     req.availableFunds = currentBalance;
     next();
   } catch (e) {
     console.log(e.message);
     throw Error(e.message);
+    res.status(404);
   }
 };
 

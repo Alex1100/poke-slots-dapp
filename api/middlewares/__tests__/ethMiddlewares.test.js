@@ -14,10 +14,10 @@ const secondEthAddress = process.env.ETHADDRESSTWO;
 const checkWalletFunds = async (req, res) => {
   try {
     const {
-      fromAddr
+      ethAddr
     } = req.body;
 
-    const currentBalance = await web3.eth.getBalance(fromAddr);
+    const currentBalance = await web3.eth.getBalance(ethAddr);
     req.availableFunds = currentBalance;
     return req.availableFunds;
   } catch (e) {

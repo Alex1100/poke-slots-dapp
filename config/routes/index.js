@@ -1,7 +1,8 @@
 const router = require('express').Router();
 const {
   getUserHistory,
-  getAllTransactions
+  getAllTransactions,
+  verifyAddress
 } = require('../../api/controllers/users');
 
 const { checkUsersPSTTokenFunds } = require('../../api/middlewares/contractMiddlewares');
@@ -17,5 +18,6 @@ const {
 router.get('/transfer', [checkWalletFunds, exchangeEthForPSTToken], purchasePSTToken);
 router.get('/users/:address', getUserHistory);
 router.get('/users/:address/tx', getAllTransactions);
+router.post('/verifyAddress', checkWalletFunds, verifyAddress);
 
 module.exports = router;

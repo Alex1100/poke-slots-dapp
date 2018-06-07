@@ -18,9 +18,20 @@ const getAllTransactions = async (req, res) => {
   res.json({txList: r});
 };
 
+const verifyAddress = async (req, res) => {
+  if (req.availableFunds) {
+    res.status(200);
+    res.json(true);
+  } else {
+    res.status(404);
+    res.json(false);
+  }
+};
+
 
 
 module.exports = {
   getUserHistory,
-  getAllTransactions
+  getAllTransactions,
+  verifyAddress
 };
