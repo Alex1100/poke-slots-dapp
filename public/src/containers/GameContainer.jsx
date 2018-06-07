@@ -4,6 +4,17 @@ import React,
   Fragment
 } from 'react';
 
+const {
+  incrementWagerPlaced,
+  incrementCoinCount,
+  decrementWagerPlaced,
+  decrementCoinCount,
+  setCoinsToZero,
+  updateReelsOrder,
+  setWagerToCoins,
+  updateMultiplier
+} from '../actions/game';
+
 class GameContainer extends Component {
   constructor(props) {
     super(props);
@@ -13,7 +24,58 @@ class GameContainer extends Component {
     this.startFlashing();
   }
 
+  placeMaxWager(e) {
+    e.preventDefault();
+    const {
+      wagerPlaced,
+      coins,
+      dispatch
+    } = this.props;
+
+    let maxBetDiv =
+      document
+      .body
+      .getElementsByClassName('max_bet')[0];
+
+    maxBetDiv['style']['color'] = 'gold';
+
+    if (wagerPlaced === 0) {
+      dispatch(incrementWagerPlaced(wagerPlaced, coins));
+      dispatch(decrementCoinCount(coins, wagerPlaced))
+    } else if (wagerPlaced >= 10 && wagerPlaced <= 2000000000) {
+      dispatch(incrementWagerPlaced(wagerPlaced, coins));
+      dispatch(decrementCoinCount(coins, coins));
+    }
+    alert('Max Wager Placed!');
+  }
+
+  decreaseBet(e) {
+    e.preventDefault();
+    const {
+      wagerPlaced,
+      coins,
+      dispatch
+    } = this.props;
+
+    let betDiv =
+      document
+      .body
+      .getElementsByClassName('decrease')[0];
+
+    betDiv['style']['color'] = 'gold';
+
+    if (wagerPlaced > 0) {
+      if (coins || coins !== undefined) {
+        dispatch(decrementWagerPlaced(wagerPlaced, 10));
+        dispatch(incrementCoinCount(coins, 10));
+      }
+    } else {
+      alert('Minimum bet is 10 PSTT Tokens');
+    }
+  }
+
   increaseBet(e) {
+    e.preventDefault();
     const {
       wagerPlaced,
       coins,
@@ -29,8 +91,8 @@ class GameContainer extends Component {
 
     if (wagerPlaced < 1999999990 && coins > 0) {
       if (coins) {
-        dispatch(incrementWagerPlaced(10));
-        dispatch(decrementCoinCount(10));
+        dispatch(incrementWagerPlaced(wagerPlaced, 10));
+        dispatch(decrementCoinCount(coins, 10));
       }
     }
 
@@ -41,6 +103,26 @@ class GameContainer extends Component {
     if (wagerPlaced === 0 && coins  <= 0) {
       alert('Insufficient Funds. Minimum bet is 10 coins');
     }
+  }
+
+  changeMaxBetStylesLive(e) {
+    let maxBetDiv =
+      document
+      .body
+      .getElementsByClassName('max_bet')[0];
+
+    maxBetDiv['style']['color'] = 'red';
+    maxBetDiv['style']['backgroundColor'] = 'black';
+  }
+
+  changeMaxBetStylesFade(e) {
+    let maxBetDiv =
+      document
+      .body
+      .getElementsByClassName('max_bet')[0];
+
+    maxBetDiv['style']['color'] = 'black';
+    maxBetDiv['style']['backgroundColor'] = 'lightgrey';
   }
 
   changeBetStylesLive(e) {
@@ -121,7 +203,7 @@ class GameContainer extends Component {
       bulbs
     } = this.props;
 
-    let light = document.body.getElementsByClassName(`light light-${lightNum}`);
+    let light = document.body.getElementsByClassName(`light-${lightNum}`);
     let rnd = Math.floor(Math.random() * 12) + 1;
     light[0]['style']['backgroundImage'] = `url("../../assets/${bulbs[rnd]}")`;
   }
@@ -347,9 +429,23 @@ class GameContainer extends Component {
           >
             <p>Increase Bet<p>
           </button>
-          <button className="decrease"><p>Decrease Bet</p></button>
+          <button
+            className="decrease"
+            onMouseEnter={e => this.changeMaxBetStylesLive(e)}
+            onMouseLeave={e => this.changeMaxBetStylesFade(e)}
+            onClick={e => this.decreaseBet(e)}
+          >
+            <p>Decrease Bet</p>
+          </button>
           <div className="amount"><p className="bet_coins">{wagerPlaced}</p></div>
-          <button className="max_bet"><p>Max Bet</p></button>
+          <button
+            className="max_bet"
+            onMouseEnter={e => this.changeBetStylesLive(e)}
+            onMouseLeave={e => this.changeBetStylesFade(e)}
+            onClick={e => this.decreaseBet(e)}
+          >
+            <p>Max Bet</p>
+          </button>
           <button
             className="spin_wheel"
             onClick={(e) => this.spinWheel(e)}
