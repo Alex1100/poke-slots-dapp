@@ -1,0 +1,291 @@
+.machine{
+  display: block;
+  position: absolute;
+  left: 200px;
+  background-color: #e69900;
+  font-family: impact, sans-serif;
+  font-size: 12px;
+  color: #000000;
+  font-style: oblique;
+  font-weight: bold;
+  font-variant: normal;
+  text-align: center;
+  letter-spacing: 0px;
+  line-height: 20px;
+  width: 780px;
+  height: 600px;
+  border-radius: 20px;
+}
+
+audio.slot_sounds_a{
+  visibility: hidden;
+}
+
+audio.slot_sounds_b{
+  visibility: hidden;
+}
+
+.top_info{
+  display: block;
+  position: absolute;
+  left: 330px;
+}
+
+.coins{
+  color: gold;
+  display: block;
+  position: absolute;
+  left: 75px;
+  top: 17px;
+}
+
+.machine_mid{
+  display: block;
+  position: absolute;
+  left: -20px;
+  top: -30px;
+}
+
+.machine_bottom{
+  display: block;
+  position: absolute;
+  background-color: black;
+  width: 600px;
+  height: 30px;
+  border: groove white 6px;
+  border-radius: 2px;
+  left: 290px;
+  top: 525px;
+}
+
+p.coins{
+  color: white;
+}
+p.amount{
+  display: block;
+  position: absolute;
+  left: 20px;
+  top: 4px;
+  color: white;
+}
+
+.money{
+  display: block;
+  position: absolute;
+  left: 20px;
+  top: 560px;
+  width: 110px;
+  height: 50px;
+  background-color: black;
+  border-radius: 19px;
+  border: groove 10px white;
+}
+
+audio.background_music{
+  visibility: hidden;
+}
+
+.bet{
+  display: block;
+  position: absolute;
+  left: 5px;
+  width: 100px;
+  height: 20px;
+  top: 3px;
+  border: 2px groove white;
+  border-bottom-left-radius: 4px;
+  box-shadow: 3px 3px 1.5px #888888;
+  text-align: center;
+}
+
+.bet > p{
+  font-size: 12px;
+  display: block;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+}
+
+.decrease{
+  display: block;
+  position: absolute;
+  left: 130px;
+  width: 100px;
+  height: 20px;
+  top: 3px;
+  border: 2px groove white;
+  border-bottom-left-radius: 4px;
+  box-shadow: 3px 3px 1.5px #888888;
+}
+
+.decrease > p{
+  font-size: 12px;
+  display: block;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+}
+
+.amount{
+  display: block;
+  position: absolute;
+  left: 245px;
+  width: 100px;
+  height: 20px;
+  top: 2px;
+  border: 2px groove white;
+  border-bottom-left-radius: 4px;
+  box-shadow: 3px 3px 1.5px #888888;
+}
+
+.amount > p{
+  text-align: center;
+  color: red;
+  font-family: 'Orbitron', sans-serif;
+  display: block;
+  position: absolute;
+  top: -13px;
+  left: 30px;
+}
+
+.max_bet{
+  display: block;
+  position: absolute;
+  left: 370px;
+  width: 100px;
+  height: 20px;
+  top: 3px;
+  border: 2px groove white;
+  border-bottom-left-radius: 4px;
+  box-shadow: 3px 3px 1.5px #888888;
+}
+
+.max_bet > p{
+  font-size: 12px;
+  display: block;
+  position: absolute;
+  top: -10px;
+  left: 25px;
+}
+
+.spin_wheel{
+  display: block;
+  position: absolute;
+  top: 3px;
+  right: 10px;
+  width: 100px;
+  height: 20px;
+  border: white groove 2px;
+  border-bottom-left-radius: 4px;
+  box-shadow: 3px 3px 1.5px #888888;
+}
+
+.display_body{
+  display: block;
+  position: absolute;
+  background-color: white;
+  left: 160px;
+  top: 100px;
+  width: 490px;
+  height: 400px;
+  border: black solid 5px;
+  border-radius: 10px;
+}
+
+.poke {
+  height: 100px;
+  width: 100px;
+  display: inline-block;
+  margin-right: 37px;
+  margin-top: 20px;
+  margin-left: 18px;
+}
+
+.poke0 {
+  background: url('../images/pikachu_slot.jpg') no-repeat center center;
+  background-size: cover;
+}
+
+.poke1 {
+  background: url('../images/torchic_slot.png') no-repeat center center;
+  background-size: cover;
+}
+
+.poke2 {
+  background: url('../images/leafeon_slot.png') no-repeat center center;
+  background-size: cover;
+}
+
+.poke3 {
+  background: url('../images/vaporeon_slot.png') no-repeat center center;
+  background-size: cover;
+}
+
+.poke4 {
+  background: url('../images/flareon_slot.png') no-repeat center center;
+  background-size: cover;
+}
+
+.poke5 {
+  background: url('../images/seven_slot.png') no-repeat center center;
+  background-size: cover;
+}
+
+.poke_coin {
+  background: url('../images/poke_coin1.gif') no-repeat center center;
+  background-size: cover;
+}
+
+.lights {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.light {
+  position: absolute;
+  width: 80px;
+  height: 65px;
+}
+
+.light-0 {
+  top: 105px;
+  left: 40px;
+  background: url("../images/empty_bulb.png") no-repeat center center;
+  background-size: contain;
+}
+
+.light-1 {
+  top: 105px;
+  right: 40px;
+  background: url("../images/empty_bulb.png") no-repeat center center;
+  background-size: contain;
+}
+
+.light-2 {
+  top: 230px;
+  left: 40px;
+  background: url("../images/empty_bulb.png") no-repeat center center;
+  background-size: contain;
+}
+
+.light-3 {
+  top: 230px;
+  right: 40px;
+  background: url("../images/empty_bulb.png") no-repeat center center;
+  background-size: contain;
+}
+
+.light-4 {
+  top: 365px;
+  left: 40px;
+  background: url("../images/empty_bulb.png") no-repeat center center;
+  background-size: contain;
+}
+
+.light-5 {
+  top: 365px;
+  right: 40px;
+  background: url("../images/empty_bulb.png") no-repeat center center;
+  background-size: contain;
+}

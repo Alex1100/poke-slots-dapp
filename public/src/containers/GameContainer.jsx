@@ -9,18 +9,101 @@ class GameContainer extends Component {
     super(props);
   }
 
+  componentDidMount() {
+    this.startFlashing();
+  }
 
-  spinWheel() {
+  increaseBet(e) {
+    const {
+      wagerPlaced,
+      coins,
+      dispatch
+    } = this.props;
+
+    let betDiv =
+      document
+      .body
+      .getElementsByClassName('bet')[0];
+
+    betDiv['style']['color'] = 'gold';
+
+    if (wagerPlaced < 1999999990 && coins > 0) {
+      if (coins) {
+        dispatch(incrementWagerPlaced(10));
+        dispatch(decrementCoinCount(10));
+      }
+    }
+
+    if (wagerPlaced === 2000000000 && coins > 0) {
+      alert('You own all PSTT Tokens in existence.');
+    }
+
+    if (wagerPlaced === 0 && coins  <= 0) {
+      alert('Insufficient Funds. Minimum bet is 10 coins');
+    }
+  }
+
+  changeBetStylesLive(e) {
+    let betDiv =
+      document
+      .body
+      .getElementsByClassName('bet')[0];
+
+    betDiv['style']['color'] = 'red';
+    betDiv['style']['backgroundColor'] = 'black';
+  }
+
+  changeBetStylesFade(e) {
+    let betDiv =
+      document
+      .body
+      .getElementsByClassName('bet')[0];
+
+    betDiv['style']['color'] = 'black';
+    betDiv['style']['backgroundColor'] = 'lightgrey';
+  }
+
+  changeWheelStylesLive(e) {
+    let wheelDiv =
+      document
+      .body
+      .getElementsByClassName('spin_wheel')[0];
+
+      wheelDiv['style']['color'] = 'red';
+      wheelDiv['style']['backgroundColor'] = 'black';
+  }
+
+  changeWheelStylesFade(e) {
+    let wheelDiv =
+      document
+      .body
+      .getElementsByClassName('spin_wheel')[0];
+
+    wheelDiv['style']['color'] = 'black';
+    wheelDiv['style']['backgroundColor'] = 'lightgrey';
+  }
+
+  spinWheel(e) {
+    e.preventDefault();
     const {
       coins,
       dispatch,
       wagerPlaced
     } = this.props;
 
-    if (wagerPlaced > 0 && coins >= 0) {
-      this.selectPokemons();
-      this.checkWinningConditions();
-    }
+    if(coins <= 0 && wagerPlaced <= 0){
+      coins = 0;
+      dispatch(setCoinsToZero());
+      // alert("Lost All The Coins! Give It Another Shot!");
+    } else {
+      // $(".slot_sounds_a").trigger("play");
+      let wheelDiv = document.body.getElementsByClassName('spin_wheel')[0]
+      wheelDiv['style']['color'] = 'gold';
+
+      if (wagerPlaced > 0 && coins >= 0) {
+        this.selectPokemons();
+        this.checkWinningConditions();
+      }
   }
 
   startFlashing() {
@@ -219,7 +302,8 @@ class GameContainer extends Component {
       sufficientFunds,
       fundsErrorMessage,
       dispatch,
-      history
+      history,
+      coins
     } = this.props;
 
     return (
@@ -240,7 +324,7 @@ class GameContainer extends Component {
         <div className="machine_mid">
           <div className="money">
             <p className="amount"><u>COINS:</u></p>
-            <div className="coins"></div>
+            <div className="coins">{coins}</div>
           </div>
           <div className="display_body">
             <div className="poke" />
@@ -255,11 +339,25 @@ class GameContainer extends Component {
           </div>
         </div>
         <div className="machine_bottom">
-          <button className="bet"><p>Increase Bet<p></button>
+          <button
+            className="bet"
+            onMouseEnter={e => this.changeBetStylesLive(e)}
+            onMouseLeave={e => this.changeBetStylesFade(e)}
+            onClick={e => this.increaseBet(e)}
+          >
+            <p>Increase Bet<p>
+          </button>
           <button className="decrease"><p>Decrease Bet</p></button>
-          <div className="amount"><p className="bet_coins"></p></div>
+          <div className="amount"><p className="bet_coins">{wagerPlaced}</p></div>
           <button className="max_bet"><p>Max Bet</p></button>
-          <button className="spin_wheel">Spin</button>
+          <button
+            className="spin_wheel"
+            onClick={(e) => this.spinWheel(e)}
+            onMouseEnter={e => this.changeWheelStylesLive(e)}
+            onMouseLeave={e => this.changeWheelStylesFade(e)}
+          >
+            Spin
+          </button>
         </div>
       </div>
     );
