@@ -1,88 +1,67 @@
 import {
-  INCREASE_BET_REQ,
-  INCREASE_BET_SUC,
-  INCREASE_BET_ERR,
-  DECREASE_BET_REQ,
-  DECREASE_BET_SUC,
-  DECREASE_BET_ERR,
-  PLACE_BET_REQ,
-  PLACE_BET_SUC,
-  PLACE_BET_ERR,
-  SHOW_EARNINGS_REQ,
-  SHOW_EARNINGS_SUC,
-  SHOW_EARNINGS_ERR,
   BUY_PSTTOKENS_REQ,
   BUY_PSTTOKENS_SUC,
   BUY_PSTTOKENS_ERR
 } from '../actions/gameStats';
 
+import {
+  INCREMENT_WAGER,
+  DECREMENT_WAGER,
+  SET_COINS_TO_ZERO,
+  SET_WAGER_TO_COINS,
+  UPDATE_MULTIPLIER,
+  DECREMENT_COIN_COUNT,
+  INCREMENT_COIN_COUNT
+} from '../actions/game';
+
 const gameStats = (state = {
   wagerPlaced: 0,
   sufficientFunds: false,
-  coins: 0,
-  multiplier: 0,
+  coins: 100,
+  multiplier: 1,
   fundsErrorMessage: '',
 }, action) => {
   switch(action.type) {
-    case INCREASE_BET_REQ:
+    case INCREMENT_WAGER:
       return {
         ...state,
+        wagerPlaced: action.wagerPlaced,
+        coins: action.coins
       };
-    case INCREASE_BET_SUC:
-      return {
-        ...state
-      };
-    case INCREASE_BET_ERR:
+    case DECREMENT_WAGER:
       return {
         ...state,
+        wagerPlaced: action.wagerPlaced,
+        coins: action.coins
       };
-    case DECREASE_BET_REQ:
+    case DECREMENT_COIN_COUNT:
       return {
         ...state,
+        wagerPlaced: action.wagerPlaced,
+        coins: action.coins
       };
-    case DECREASE_BET_SUC:
-      return {
-        ...state
-      };
-    case DECREASE_BET_ERR:
+    case INCREMENT_COIN_COUNT:
       return {
         ...state,
+        wagerPlaced: action.wagerPlaced,
+        coins: action.coins
       };
-    case PLACE_BET_REQ:
+    case SET_COINS_TO_ZERO:
       return {
         ...state,
+        coins: action.coins,
+        wagerPlaced: action.wagerPlaced
       };
-    case PLACE_BET_SUC:
-      return {
-        ...state
-      };
-    case PLACE_BET_ERR:
+    case SET_WAGER_TO_COINS:
       return {
         ...state,
+        coins: action.coins,
+        wagerPlaced: action.wagerPlaced
       };
-    case SHOW_EARNINGS_REQ:
+    case UPDATE_MULTIPLIER:
       return {
         ...state,
-      };
-    case SHOW_EARNINGS_SUC:
-      return {
-        ...state
-      };
-    case SHOW_EARNINGS_ERR:
-      return {
-        ...state,
-      };
-    case BUY_PSTTOKENS_REQ:
-      return {
-        ...state,
-      };
-    case BUY_PSTTOKENS_SUC:
-      return {
-        ...state
-      };
-    case BUY_PSTTOKENS_ERR:
-      return {
-        ...state,
+        multiplier: action.multiplier
       };
     default:
       return state;

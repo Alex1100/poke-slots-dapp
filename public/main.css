@@ -31,11 +31,11 @@ audio.slot_sounds_b{
   left: 330px;
 }
 
-.coins{
+.coins {
   color: gold;
   display: block;
   position: absolute;
-  left: 75px;
+  left: 50px;
   top: 17px;
 }
 
@@ -48,14 +48,14 @@ audio.slot_sounds_b{
 
 .machine_bottom{
   display: block;
-  position: absolute;
+  position: relative;
   background-color: black;
   width: 600px;
   height: 30px;
   border: groove white 6px;
   border-radius: 2px;
-  left: 290px;
-  top: 525px;
+  left: 85px;
+  top: 484px;
 }
 
 p.coins{
@@ -63,8 +63,8 @@ p.coins{
 }
 p.amount{
   display: block;
-  position: absolute;
-  left: 20px;
+  position: relative;
+  left: -20px;
   top: 4px;
   color: white;
 }
@@ -74,7 +74,7 @@ p.amount{
   position: absolute;
   left: 20px;
   top: 560px;
-  width: 110px;
+  width: 125px;
   height: 50px;
   background-color: black;
   border-radius: 19px;
@@ -85,7 +85,7 @@ audio.background_music{
   visibility: hidden;
 }
 
-.bet{
+.increase {
   display: block;
   position: absolute;
   left: 5px;
@@ -98,7 +98,7 @@ audio.background_music{
   text-align: center;
 }
 
-.bet > p{
+.increase > p{
   font-size: 12px;
   display: block;
   position: absolute;
@@ -106,7 +106,7 @@ audio.background_music{
   left: 10px;
 }
 
-.decrease{
+.decrease {
   display: block;
   position: absolute;
   left: 130px;
@@ -126,7 +126,7 @@ audio.background_music{
   left: 10px;
 }
 
-.amount{
+.machine_bottom > .amount{
   display: block;
   position: absolute;
   left: 245px;
@@ -138,7 +138,15 @@ audio.background_music{
   box-shadow: 3px 3px 1.5px #888888;
 }
 
-.amount > p{
+.amount{
+  display: block;
+  position: relative;
+  width: 100px;
+  height: 20px;
+  top: 2px;
+}
+
+.amount > p {
   text-align: center;
   color: red;
   font-family: 'Orbitron', sans-serif;
@@ -202,37 +210,49 @@ audio.background_music{
 }
 
 .poke0 {
-  background: url('../images/pikachu_slot.jpg') no-repeat center center;
+  background-image: url("./assets/pikachu_slot.jpg");
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 }
 
 .poke1 {
-  background: url('../images/torchic_slot.png') no-repeat center center;
+  background-image: url('./assets/torchic_slot.png');
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 }
 
 .poke2 {
-  background: url('../images/leafeon_slot.png') no-repeat center center;
+  background-image: url('./assets/leafeon_slot.png');
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 }
 
 .poke3 {
-  background: url('../images/vaporeon_slot.png') no-repeat center center;
+  background-image: url('./assets/vaporeon_slot.png');
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 }
 
 .poke4 {
-  background: url('../images/flareon_slot.png') no-repeat center center;
+  background-image: url('./assets/flareon_slot.png');
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 }
 
 .poke5 {
-  background: url('../images/seven_slot.png') no-repeat center center;
+  background-image: url('./assets/seven_slot.png');
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
 }
 
 .poke_coin {
-  background: url('../images/poke_coin1.gif') no-repeat center center;
+  background: url('./assets/poke_coin1.gif') no-repeat center center;
   background-size: cover;
 }
 
@@ -251,41 +271,41 @@ audio.background_music{
 .light-0 {
   top: 105px;
   left: 40px;
-  background: url("../images/empty_bulb.png") no-repeat center center;
+  background: url("./assets/empty_bulb.png") no-repeat center center;
   background-size: contain;
 }
 
 .light-1 {
   top: 105px;
   right: 40px;
-  background: url("../images/empty_bulb.png") no-repeat center center;
+  background: url("./assets/empty_bulb.png") no-repeat center center;
   background-size: contain;
 }
 
 .light-2 {
   top: 230px;
   left: 40px;
-  background: url("../images/empty_bulb.png") no-repeat center center;
+  background: url("./assets/empty_bulb.png") no-repeat center center;
   background-size: contain;
 }
 
 .light-3 {
   top: 230px;
   right: 40px;
-  background: url("../images/empty_bulb.png") no-repeat center center;
+  background: url("./assets/empty_bulb.png") no-repeat center center;
   background-size: contain;
 }
 
 .light-4 {
   top: 365px;
   left: 40px;
-  background: url("../images/empty_bulb.png") no-repeat center center;
+  background: url("./assets/empty_bulb.png") no-repeat center center;
   background-size: contain;
 }
 
 .light-5 {
   top: 365px;
   right: 40px;
-  background: url("../images/empty_bulb.png") no-repeat center center;
+  background: url("./assets/empty_bulb.png") no-repeat center center;
   background-size: contain;
 }

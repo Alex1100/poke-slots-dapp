@@ -4,20 +4,46 @@ import React,
   Fragment
 } from 'react';
 
-const {
-  incrementWagerPlaced,
-  incrementCoinCount,
-  decrementWagerPlaced,
-  decrementCoinCount,
+import {
+  connect
+} from 'react-redux'
+
+import {
+  increaseWager,
+  decreaseWager,
   setCoinsToZero,
-  updateReelsOrder,
+  changeReelsOrder,
   setWagerToCoins,
-  updateMultiplier
+  updateMultiplier,
+  decrementCoinCount,
+  incrementCoinCount
 } from '../actions/game';
 
 class GameContainer extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      flashing: false
+    };
+
+    this.placeMaxWager = this.placeMaxWager.bind(this);
+    this.decreaseBet = this.decreaseBet.bind(this);
+    this.increaseBet = this.increaseBet.bind(this);
+    this.changeMaxBetStylesLive = this.changeMaxBetStylesLive.bind(this);
+    this.changeMaxBetStylesFade = this.changeMaxBetStylesFade.bind(this);
+    this.changeBetStylesLive = this.changeBetStylesLive.bind(this);
+    this.changeBetStylesFade = this.changeBetStylesFade.bind(this);
+    this.changeWheelStylesLive = this.changeWheelStylesLive.bind(this);
+    this.changeWheelStylesFade = this.changeWheelStylesFade.bind(this);
+    this.spinWheel = this.spinWheel.bind(this);
+    this.startFlashing = this.startFlashing.bind(this);
+    this.changeLight = this.changeLight.bind(this);
+    this.selectPokemons = this.selectPokemons.bind(this);
+    this.checkBetAmount = this.checkBetAmount.bind(this);
+    this.checkWinningConditions = this.checkWinningConditions.bind(this);
+    this.countCoins = this.countCoins.bind(this);
+    this.getRndUpTo = this.getRndUpTo.bind(this);
   }
 
   componentDidMount() {
@@ -29,7 +55,8 @@ class GameContainer extends Component {
     const {
       wagerPlaced,
       coins,
-      dispatch
+      dispatch,
+      history
     } = this.props;
 
     let maxBetDiv =
@@ -40,21 +67,19 @@ class GameContainer extends Component {
     maxBetDiv['style']['color'] = 'gold';
 
     if (wagerPlaced === 0) {
-      dispatch(incrementWagerPlaced(wagerPlaced, coins));
-      dispatch(decrementCoinCount(coins, wagerPlaced))
+      dispatch(increaseWager(wagerPlaced, coins, coins, history));
     } else if (wagerPlaced >= 10 && wagerPlaced <= 2000000000) {
-      dispatch(incrementWagerPlaced(wagerPlaced, coins));
-      dispatch(decrementCoinCount(coins, coins));
+      dispatch(increaseWager(wagerPlaced, coins, coins, history));
     }
     alert('Max Wager Placed!');
   }
 
   decreaseBet(e) {
-    e.preventDefault();
     const {
       wagerPlaced,
       coins,
-      dispatch
+      dispatch,
+      history
     } = this.props;
 
     let betDiv =
@@ -66,8 +91,7 @@ class GameContainer extends Component {
 
     if (wagerPlaced > 0) {
       if (coins || coins !== undefined) {
-        dispatch(decrementWagerPlaced(wagerPlaced, 10));
-        dispatch(incrementCoinCount(coins, 10));
+        dispatch(decreaseWager(wagerPlaced, coins, 10, history));
       }
     } else {
       alert('Minimum bet is 10 PSTT Tokens');
@@ -75,24 +99,23 @@ class GameContainer extends Component {
   }
 
   increaseBet(e) {
-    e.preventDefault();
     const {
       wagerPlaced,
       coins,
-      dispatch
+      dispatch,
+      history
     } = this.props;
 
     let betDiv =
       document
       .body
-      .getElementsByClassName('bet')[0];
+      .getElementsByClassName('increase')[0];
 
     betDiv['style']['color'] = 'gold';
 
     if (wagerPlaced < 1999999990 && coins > 0) {
       if (coins) {
-        dispatch(incrementWagerPlaced(wagerPlaced, 10));
-        dispatch(decrementCoinCount(coins, 10));
+        dispatch(increaseWager(wagerPlaced, coins, 10, history));
       }
     }
 
@@ -129,7 +152,7 @@ class GameContainer extends Component {
     let betDiv =
       document
       .body
-      .getElementsByClassName('bet')[0];
+      .getElementsByClassName(e)[0];
 
     betDiv['style']['color'] = 'red';
     betDiv['style']['backgroundColor'] = 'black';
@@ -139,7 +162,7 @@ class GameContainer extends Component {
     let betDiv =
       document
       .body
-      .getElementsByClassName('bet')[0];
+      .getElementsByClassName(e)[0];
 
     betDiv['style']['color'] = 'black';
     betDiv['style']['backgroundColor'] = 'lightgrey';
@@ -166,7 +189,6 @@ class GameContainer extends Component {
   }
 
   spinWheel(e) {
-    e.preventDefault();
     const {
       coins,
       dispatch,
@@ -174,11 +196,8 @@ class GameContainer extends Component {
     } = this.props;
 
     if(coins <= 0 && wagerPlaced <= 0){
-      coins = 0;
       dispatch(setCoinsToZero());
-      // alert("Lost All The Coins! Give It Another Shot!");
     } else {
-      // $(".slot_sounds_a").trigger("play");
       let wheelDiv = document.body.getElementsByClassName('spin_wheel')[0]
       wheelDiv['style']['color'] = 'gold';
 
@@ -186,15 +205,17 @@ class GameContainer extends Component {
         this.selectPokemons();
         this.checkWinningConditions();
       }
+    }
   }
 
   startFlashing() {
     for (let i = 0; i < 6; i++) {
-      (function(j) {
-        setInterval(() => {
-          this.changeLight(j);
+      let l = this.changeLight;
+      (function(j, d) {
+        setInterval(function() {
+          d(j);
         }, 275);
-      })(i);
+      })(i, l);
     }
   }
 
@@ -211,21 +232,17 @@ class GameContainer extends Component {
   selectPokemons() {
     const {
       pokes,
-      $reels
+      dispatch,
+      history
     } = this.props;
 
     let temp = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 9; i++) {
       let randNum = this.getRndUpTo(pokes.length);
       temp.push(pokes[randNum]);
     }
 
-    dispatch(updateReelsOrder(temp));
-    $reels.forEach((reel, idx) => {
-      $reels['className'] = 'poke' + reels[idx];
-    });
-
-    console.log("REELS: ", reels);
+    dispatch(changeReelsOrder(temp, history));
   }
 
   checkBetAmount(){
@@ -233,6 +250,7 @@ class GameContainer extends Component {
       wagerPlaced,
       coins,
       dispatch,
+      history
     } = this.props;
 
     if(
@@ -241,11 +259,12 @@ class GameContainer extends Component {
       ){
         if (coins < 0) {
           dispatch(setCoinsToZero());
+        } else {
+          dispatch(setWagerToCoins(coins));
         }
 
-        dispatch(setWagerToCoins(coins));
     } else {
-      dispatch(decrementCoinCount(wagerPlaced));
+      dispatch(decrementCoinCount(wagerPlaced, coins, history));
     }
   }
 
@@ -264,7 +283,6 @@ class GameContainer extends Component {
     }
 
     if((wagerPlaced <= 100) && (reels[3] === reels[4]) && reels[3] === reels[5]){
-      multiplier = 10;
       dispatch(updateMultiplier(10));
       this.countCoins(reels[3]);
       return true;
@@ -344,7 +362,12 @@ class GameContainer extends Component {
       Flareon,
       Vaporeon,
       Leafeon,
-      Sevens
+      Sevens,
+      multiplier,
+      dispatch,
+      history,
+      wagerPlaced,
+      coins
     } = this.props;
 
     let val;
@@ -352,24 +375,31 @@ class GameContainer extends Component {
     switch(pokemon) {
       case 'poke0':
         val = (Pikachu * multiplier);
-        dispatch(incrementCoinCount(val));
+        dispatch(incrementCoinCount(wagerPlaced, coins, val, history));
+        break;
       case 'poke1':
         val = (Torchik * multiplier);
-        dispatch(incrementCoinCount(val));
+        dispatch(incrementCoinCount(wagerPlaced, coins, val, history));
+        break;
       case 'poke2':
         val = (Flareon * multiplier);
-        dispatch(incrementCoinCount(val));
+        dispatch(incrementCoinCount(wagerPlaced, coins, val, history));
+        break;
       case 'poke3':
         val = (Vaporeon * multiplier);
-        dispatch(incrementCoinCount(val));
+        dispatch(incrementCoinCount(wagerPlaced, coins, val, history));
+        break;
       case 'poke4':
         val = (Leafeon * multiplier);
-        dispatch(incrementCoinCount(val));
+        dispatch(incrementCoinCount(wagerPlaced, coins, val, history));
+        break;
       case 'poke5':
         val = (Sevens * multiplier);
-        dispatch(incrementCoinCount(val));
+        dispatch(incrementCoinCount(wagerPlaced, coins, val, history));
+        break;
       default:
-        return false;
+        dispatch(decrementCoinCount(wagerPlaced, coins, history));
+        break;
     }
   }
 
@@ -383,9 +413,8 @@ class GameContainer extends Component {
       wagerPlaced,
       sufficientFunds,
       fundsErrorMessage,
-      dispatch,
-      history,
-      coins
+      coins,
+      reels
     } = this.props;
 
     return (
@@ -409,52 +438,63 @@ class GameContainer extends Component {
             <div className="coins">{coins}</div>
           </div>
           <div className="display_body">
-            <div className="poke" />
-            <div className="poke" />
-            <div className="poke" />
-            <div className="poke" />
-            <div className="poke" />
-            <div className="poke" />
-            <div className="poke" />
-            <div className="poke" />
-            <div className="poke" />
+            {
+              reels.map((pok, i) => (
+                <div className={`poke ${pok}`} />
+              ))
+            }
           </div>
         </div>
         <div className="machine_bottom">
-          <button
-            className="bet"
-            onMouseEnter={e => this.changeBetStylesLive(e)}
-            onMouseLeave={e => this.changeBetStylesFade(e)}
-            onClick={e => this.increaseBet(e)}
-          >
-            <p>Increase Bet<p>
-          </button>
-          <button
-            className="decrease"
-            onMouseEnter={e => this.changeMaxBetStylesLive(e)}
-            onMouseLeave={e => this.changeMaxBetStylesFade(e)}
-            onClick={e => this.decreaseBet(e)}
-          >
-            <p>Decrease Bet</p>
-          </button>
-          <div className="amount"><p className="bet_coins">{wagerPlaced}</p></div>
-          <button
-            className="max_bet"
-            onMouseEnter={e => this.changeBetStylesLive(e)}
-            onMouseLeave={e => this.changeBetStylesFade(e)}
-            onClick={e => this.decreaseBet(e)}
-          >
-            <p>Max Bet</p>
-          </button>
-          <button
-            className="spin_wheel"
-            onClick={(e) => this.spinWheel(e)}
-            onMouseEnter={e => this.changeWheelStylesLive(e)}
-            onMouseLeave={e => this.changeWheelStylesFade(e)}
-          >
-            Spin
-          </button>
+          <Fragment>
+            <button
+              className="increase"
+              onMouseEnter={e => this.changeBetStylesLive('increase')}
+              onMouseLeave={e => this.changeBetStylesFade('increase')}
+              onClick={e => this.increaseBet(e)}
+            >
+              Increase Bet
+            </button>
+          </Fragment>
+          <Fragment>
+            <button
+              className="decrease"
+              onMouseEnter={e => this.changeBetStylesLive('decrease')}
+              onMouseLeave={e => this.changeBetStylesFade('decrease')}
+              onClick={e => this.decreaseBet(e)}
+            >
+              Decrease Bet
+            </button>
+          </Fragment>
+          <div className="amount">
+            <p className="bet_coins">
+              {wagerPlaced}
+            </p>
+          </div>
+          <Fragment>
+            <button
+              className="max_bet"
+              onMouseEnter={e => this.changeMaxBetStylesLive(e)}
+              onMouseLeave={e => this.changeMaxBetStylesFade(e)}
+              onClick={e => this.decreaseBet(e)}
+            >
+              Max Bet
+            </button>
+          </Fragment>
+          <Fragment>
+            <button
+              className="spin_wheel"
+              onClick={(e) => this.spinWheel(e)}
+              onMouseEnter={e => this.changeWheelStylesLive(e)}
+              onMouseLeave={e => this.changeWheelStylesFade(e)}
+            >
+              Spin
+            </button>
+          </Fragment>
         </div>
+        <br/>
+        {sufficientFunds ? 'Buy some more PSTT Tokens with Ether': null}
+        {fundsErrorMessage && fundErrorMessage !== "" ? fundsErrorMessage : null}
       </div>
     );
   }
@@ -479,13 +519,13 @@ const mapStateToProps = (state) => {
     wagerPlaced,
     sufficientFunds,
     fundsErrorMessage,
-    coins
+    coins,
+    multiplier
   } = gameStats;
 
   const {
     bulbs,
     reels,
-    $reels,
     pokes
   } = reelState;
 
@@ -496,8 +536,8 @@ const mapStateToProps = (state) => {
     coins,
     bulbs,
     reels,
-    $reels,
-    pokes
+    pokes,
+    multiplier
   };
 
 };

@@ -60,9 +60,6 @@ const {
   store
 } = createAppStore();
 
-console.log("STORE IS: ", store);
-
-
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
     <Provider store={store}>

@@ -56,8 +56,6 @@ const mapStateToProps = (state) => {
     usersIntro
   } = state;
 
-  console.log("USERS INTRO OBJ IS: ", usersIntro);
-
   const {
     ethrAddr,
     userHandle,
