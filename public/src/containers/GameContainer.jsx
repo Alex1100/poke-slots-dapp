@@ -51,7 +51,6 @@ class GameContainer extends Component {
   }
 
   placeMaxWager(e) {
-    e.preventDefault();
     const {
       wagerPlaced,
       coins,
@@ -476,7 +475,7 @@ class GameContainer extends Component {
               className="max_bet"
               onMouseEnter={e => this.changeMaxBetStylesLive(e)}
               onMouseLeave={e => this.changeMaxBetStylesFade(e)}
-              onClick={e => this.decreaseBet(e)}
+              onClick={e => this.placeMaxWager(e)}
             >
               Max Bet
             </button>
